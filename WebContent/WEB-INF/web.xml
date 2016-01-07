@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>DynamicWebWalkthrough</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  
+  	
+	<!--  contains 2 things: tell which servlet & Map servlets to actions -->
+	<servlet>
+		<servlet-name>regServlet</servlet-name>
+		<servlet-class>com.fdmgroup.dynamicwebwalkthrough.RegistrationServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>regServlet</servlet-name>
+		<url-pattern>/registration</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>movieServlet</servlet-name>
+		<servlet-class>com.fdmgroup.dynamicwebwalkthrough.MoviesServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>movieServlet</servlet-name>
+		<url-pattern>/allMovies</url-pattern>
+	</servlet-mapping>
+		
+	<servlet>
+		<servlet-name>homeServlet</servlet-name>
+		<servlet-class>com.fdmgroup.dynamicwebwalkthrough.HomeServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>homeServlet</servlet-name>
+		<url-pattern>/users/home</url-pattern>
+	</servlet-mapping>	
+		
+	<!-- Define a filter -->	
+	<filter>
+		<filter-name>regFilter</filter-name>
+		<filter-class>com.fdmgroup.dynamicwebwalkthrough.filter.RegistrationFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>regFilter</filter-name>
+		<url-pattern>/registration</url-pattern>
+	</filter-mapping>
+
+	
+	<!-- Define our security method -->
+	<login-config>
+	<auth-method>FORM</auth-method>
+	<form-login-config>
+		<form-login-page>/WEB-INF/login.jsp</form-login-page>
+		<form-error-page>/WEB-INF/login.jsp</form-error-page>
+	</form-login-config>	
+	</login-config>
+	
+	<!-- Define valid roles -->
+	<security-role>
+		<role-name>basic_user</role-name>
+	</security-role>
+	<security-role>
+		<role-name>admin_user</role-name>
+	</security-role>
+	
+	<!-- Define which pages is protected -->
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>protectedPages</web-resource-name>
+			<url-pattern>/users/*</url-pattern>
+			<http-method>POST</http-method>
+			<http-method>GET</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>basic_user</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+</web-app>
